@@ -1,10 +1,12 @@
 
 import { Link, useParams } from "react-router-dom";
+import getAllMesses from "../utils/getAllMesses";
 import MessGallery from "../components/mess/MessGallery";
 import Rating from "../components/mess/Rating";
 
 function MessDetails() {
   const { id } = useParams();
+  const messes = getAllMesses();
 
   const mess = messes.find(
     (item) => item.id === Number(id)
