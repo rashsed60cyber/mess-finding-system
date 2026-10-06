@@ -209,7 +209,15 @@ function ManageMess() {
 
                 </div>
 
+                
                 <div className="owner-card-actions">
+
+                  <Link
+                    to={`/owner/edit-mess/${mess.id}`}
+                    className="owner-edit-btn"
+                  >
+                ✏️ Edit
+                  </Link>
 
                   <button
                     type="button"
