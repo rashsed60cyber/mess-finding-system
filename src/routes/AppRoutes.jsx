@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 
 import Navbar from "../components/common/Navbar";
@@ -18,6 +17,7 @@ import OwnerRegister from "../pages/owner/OwnerRegister";
 import OwnerDashboard from "../pages/owner/OwnerDashboard";
 import AddMess from "../pages/owner/AddMess";
 import ManageMess from "../pages/owner/ManageMess";
+import EditMess from "../pages/owner/EditMess";
 
 import AdminDashboard from "../pages/admin/AdminDashboard";
 
@@ -28,34 +28,98 @@ function AppRoutes() {
 
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
 
-          <Route path="/find-mess" element={<FindMess />} />
-          <Route path="/mess/:id" element={<MessDetails />} />
-          <Route path="/best-match" element={<BestMatch />} />
-          <Route path="/compare" element={<Compare />} />
+          {/* Public Pages */}
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/find-mess"
+            element={<FindMess />}
+          />
 
-          <Route path="/owner/login" element={<OwnerLogin />} />
-          <Route path="/owner/register" element={<OwnerRegister />} />
-          <Route path="/owner/dashboard" element={<OwnerDashboard />} />
-          <Route path="/owner/add-mess" element={<AddMess />} />
-          <Route path="/owner/manage-mess" element={<ManageMess />} />
+          <Route
+            path="/mess/:id"
+            element={<MessDetails />}
+          />
 
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route
+            path="/best-match"
+            element={<BestMatch />}
+          />
 
+          <Route
+            path="/compare"
+            element={<Compare />}
+          />
+
+          {/* Student Authentication */}
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
+
+          {/* Owner Authentication */}
+          <Route
+            path="/owner/login"
+            element={<OwnerLogin />}
+          />
+
+          <Route
+            path="/owner/register"
+            element={<OwnerRegister />}
+          />
+
+          {/* Owner Dashboard */}
+          <Route
+            path="/owner/dashboard"
+            element={<OwnerDashboard />}
+          />
+
+          <Route
+            path="/owner/add-mess"
+            element={<AddMess />}
+          />
+
+          <Route
+            path="/owner/manage-mess"
+            element={<ManageMess />}
+          />
+
+          {/* Edit Mess */}
+          <Route
+            path="/owner/edit-mess/:id"
+            element={<EditMess />}
+          />
+
+          {/* Admin */}
+          <Route
+            path="/admin"
+            element={<AdminDashboard />}
+          />
+
+          {/* 404 */}
           <Route
             path="*"
             element={
               <div className="not-found">
                 <h1>404</h1>
                 <h2>Page Not Found</h2>
-                <p>The page you are looking for does not exist.</p>
+                <p>
+                  The page you are looking for
+                  does not exist.
+                </p>
               </div>
             }
           />
+
         </Routes>
       </main>
 
