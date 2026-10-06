@@ -1,7 +1,5 @@
 
 import { Link, useParams } from "react-router-dom";
-
-import messes from "../data/messes";
 import MessGallery from "../components/mess/MessGallery";
 import Rating from "../components/mess/Rating";
 
