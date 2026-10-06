@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import messes from "../data/messes";
+import getAllMesses from "../utils/getAllMesses";
 
 function Compare() {
+  const messes = getAllMesses();
   const [selectedIds, setSelectedIds] = useState(["", "", ""]);
 
   const handleSelect = (index, value) => {
