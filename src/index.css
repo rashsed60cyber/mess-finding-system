@@ -1,4 +1,399 @@
+/* ========================================
+   GLOBAL STYLES
+======================================== */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  color: #172033;
+  background: #f8fafc;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+/* ========================================
+   NAVBAR
+======================================== */
+
+.navbar {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1200px;
+  height: 72px;
+  margin: auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.logo-icon {
+  font-size: 27px;
+}
+
+.logo-highlight {
+  color: #16a34a;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  font-size: 15px;
+  font-weight: 600;
+  color: #475569;
+  transition: 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #16a34a;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.login-link {
+  font-weight: 600;
+}
+
+.nav-register-btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #16a34a;
+  color: white;
+  font-weight: 600;
+}
+
+
+/* ========================================
+   HOME HERO
+======================================== */
+
+.hero {
+  min-height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 70px 20px;
+
+  background:
+    radial-gradient(circle at top left, #dcfce7, transparent 38%),
+    radial-gradient(circle at bottom right, #dbeafe, transparent 35%),
+    #f8fafc;
+}
+
+.hero-content {
+  max-width: 850px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: #dcfce7;
+  color: #15803d;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 6vw, 70px);
+  line-height: 1.08;
+  color: #0f172a;
+}
+
+.hero h1 span {
+  display: block;
+  color: #16a34a;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 25px auto;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #64748b;
+}
+
+.hero-buttons {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.primary-btn,
+.secondary-btn,
+.cta-btn {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.primary-btn,
+.cta-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.primary-btn:hover,
+.cta-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background: white;
+  color: #172033;
+  border: 1px solid #dbe1e8;
+}
+
+.secondary-btn:hover {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+
+/* ========================================
+   HOME FEATURES
+======================================== */
+
+.features-section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 90px 24px;
+}
+
+.section-heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 50px;
+}
+
+.section-heading p {
+  color: #16a34a;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.section-heading h2 {
+  font-size: 36px;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.section-heading span {
+  color: #64748b;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.feature-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 30px 25px;
+  transition: 0.25s;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+}
+
+.feature-icon {
+  font-size: 32px;
+  margin-bottom: 18px;
+}
+
+.feature-card h3 {
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.feature-card p {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+
+/* ========================================
+   CTA
+======================================== */
+
+.cta-section {
+  margin: 20px auto 80px;
+  max-width: 1150px;
+  padding: 65px 25px;
+  text-align: center;
+  border-radius: 22px;
+  background: #0f172a;
+  color: white;
+}
+
+.cta-section h2 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.cta-section p {
+  color: #cbd5e1;
+  margin-bottom: 28px;
+}
+
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.footer {
+  background: #07101f;
+  color: white;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 55px 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 50px;
+}
+
+.footer-section h2,
+.footer-section h3 {
+  margin-bottom: 18px;
+}
+
+.footer-section p {
+  max-width: 450px;
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+.footer-section a {
+  display: block;
+  color: #cbd5e1;
+  margin: 10px 0;
+}
+
+.footer-section a:hover {
+  color: #4ade80;
+}
+
+.footer-bottom {
+  border-top: 1px solid #1e293b;
+  text-align: center;
+  padding: 20px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+
+/* ========================================
+   404
+======================================== */
+
+.not-found {
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.not-found h1 {
+  font-size: 80px;
+  color: #16a34a;
+}
+
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: 500px;
+  }
+
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+
+  .login-link {
+    display: none;
+  }
+
+  .nav-container {
+    padding: 0 15px;
+  }
+}
 /* =========================
    MESS DETAILS
 ========================= */
