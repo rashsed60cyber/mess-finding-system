@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import messes from "../data/messes";
+import getAllMesses from "../utils/getAllMesses";
 import MessCard from "../components/mess/MessCard";
 import MessFilter from "../components/mess/MessFilter";
 
@@ -16,21 +16,27 @@ const initialFilters = {
 };
 
 function FindMess() {
+  const [filters, setFilters] =
+    useState(initialFilters);
 
-  const [filters, setFilters] = useState(initialFilters);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] =
+    useState("");
+
+  const allMesses = getAllMesses();
 
   const filteredMesses = useMemo(() => {
-
-    return messes.filter((mess) => {
+    return allMesses.filter((mess) => {
+      const search =
+        searchText.trim().toLowerCase();
 
       const searchMatch =
+        !search ||
         mess.name
           .toLowerCase()
-          .includes(searchText.toLowerCase()) ||
+          .includes(search) ||
         mess.area
           .toLowerCase()
-          .includes(searchText.toLowerCase());
+          .includes(search);
 
       const areaMatch =
         !filters.area ||
@@ -38,11 +44,13 @@ function FindMess() {
 
       const rentMatch =
         !filters.maxRent ||
-        mess.rent <= Number(filters.maxRent);
+        Number(mess.rent) <=
+          Number(filters.maxRent);
 
       const distanceMatch =
         !filters.maxDistance ||
-        mess.distance <= Number(filters.maxDistance);
+        Number(mess.distance) <=
+          Number(filters.maxDistance);
 
       const genderMatch =
         !filters.gender ||
@@ -75,10 +83,12 @@ function FindMess() {
         gasMatch &&
         singleMatch
       );
-
     });
-
-  }, [filters, searchText]);
+  }, [
+    allMesses,
+    filters,
+    searchText
+  ]);
 
   const resetFilters = () => {
     setFilters(initialFilters);
@@ -94,11 +104,14 @@ function FindMess() {
           STUDENT ACCOMMODATION
         </p>
 
-        <h1>Find Your Perfect Mess</h1>
+        <h1>
+          Find Your Perfect Mess
+        </h1>
 
         <p>
-          Search and filter available messes according
-          to your requirements.
+          Search and filter available
+          messes according to your
+          requirements.
         </p>
 
         <div className="main-search">
@@ -110,7 +123,9 @@ function FindMess() {
             placeholder="Search by mess name or area..."
             value={searchText}
             onChange={(event) =>
-              setSearchText(event.target.value)
+              setSearchText(
+                event.target.value
+              )
             }
           />
 
@@ -129,12 +144,17 @@ function FindMess() {
         <div className="results-heading">
 
           <div>
-            <h2>Available Messes</h2>
+            <h2>
+              Available Messes
+            </h2>
 
             <p>
-              {filteredMesses.length} mess
-              {filteredMesses.length !== 1 ? "es" : ""}
-              {" "}found
+              {filteredMesses.length}{" "}
+              mess
+              {filteredMesses.length !== 1
+                ? "es"
+                : ""}{" "}
+              found
             </p>
           </div>
 
@@ -144,12 +164,14 @@ function FindMess() {
 
           <div className="mess-grid">
 
-            {filteredMesses.map((mess) => (
-              <MessCard
-                key={mess.id}
-                mess={mess}
-              />
-            ))}
+            {filteredMesses.map(
+              (mess) => (
+                <MessCard
+                  key={mess.id}
+                  mess={mess}
+                />
+              )
+            )}
 
           </div>
 
@@ -159,14 +181,18 @@ function FindMess() {
 
             <span>🔎</span>
 
-            <h3>No Mess Found</h3>
+            <h3>
+              No Mess Found
+            </h3>
 
             <p>
-              Try changing your search or filter
-              requirements.
+              Try changing your search
+              or filter requirements.
             </p>
 
-            <button onClick={resetFilters}>
+            <button
+              onClick={resetFilters}
+            >
               Reset Filters
             </button>
 
