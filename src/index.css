@@ -938,3 +938,483 @@
     display: none;
   }
 }
+/* =========================
+   OWNER SYSTEM
+========================= */
+
+.owner-login-required {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+
+.owner-login-required > span {
+  font-size: 60px;
+}
+
+.owner-login-required h1 {
+  margin: 15px 0 8px;
+}
+
+.owner-login-required p {
+  color: #64748b;
+}
+
+.owner-login-required a {
+  margin-top: 20px;
+  padding: 11px 20px;
+  border-radius: 8px;
+  background: #16a34a;
+  color: white;
+  font-weight: 700;
+}
+
+/* OWNER DASHBOARD */
+
+.owner-dashboard-page,
+.add-mess-page,
+.manage-mess-page {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.owner-dashboard-container,
+.add-mess-container,
+.manage-mess-container {
+  max-width: 1150px;
+  margin: auto;
+  padding: 55px 24px 90px;
+}
+
+.owner-dashboard-header,
+.add-mess-heading,
+.manage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.owner-dashboard-header > div > p,
+.add-mess-heading > div > p,
+.manage-header > div > p {
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.owner-dashboard-header h1,
+.add-mess-heading h1,
+.manage-header h1 {
+  margin: 6px 0;
+  font-size: 35px;
+}
+
+.owner-dashboard-header span,
+.add-mess-heading span,
+.manage-header span {
+  color: #64748b;
+}
+
+.owner-dashboard-header button {
+  padding: 10px 17px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: white;
+  color: #dc2626;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.owner-stats {
+  display: grid;
+  grid-template-columns:
+    repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.owner-stats > div {
+  padding: 25px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.owner-stats span {
+  font-size: 30px;
+}
+
+.owner-stats p {
+  margin: 12px 0 5px;
+  color: #64748b;
+}
+
+.owner-stats strong {
+  font-size: 25px;
+  color: #0f172a;
+}
+
+.owner-actions {
+  display: grid;
+  grid-template-columns:
+    repeat(3, 1fr);
+  gap: 20px;
+}
+
+.owner-action-card {
+  padding: 28px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  transition: 0.2s;
+}
+
+.owner-action-card:hover {
+  transform: translateY(-4px);
+  border-color: #86efac;
+  box-shadow:
+    0 12px 30px
+    rgba(15, 23, 42, 0.07);
+}
+
+.owner-action-card > span {
+  font-size: 35px;
+}
+
+.owner-action-card h3 {
+  margin: 15px 0 7px;
+}
+
+.owner-action-card p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* ADD MESS */
+
+.add-mess-heading > a {
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.add-mess-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-section {
+  padding: 28px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 15px;
+}
+
+.form-section h2 {
+  margin-bottom: 22px;
+}
+
+.owner-form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, 1fr);
+  gap: 20px;
+}
+
+.owner-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.owner-form-field label {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.owner-form-field input,
+.owner-form-field select,
+.owner-form-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dbe1e8;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+}
+
+.owner-form-field input,
+.owner-form-field select {
+  height: 46px;
+}
+
+.owner-form-field textarea {
+  resize: vertical;
+}
+
+.owner-form-field input:focus,
+.owner-form-field select:focus,
+.owner-form-field textarea:focus {
+  border-color: #16a34a;
+}
+
+.owner-checkbox-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, 1fr);
+  gap: 12px;
+}
+
+.owner-checkbox-grid label {
+  cursor: pointer;
+}
+
+.owner-checkbox-grid input {
+  display: none;
+}
+
+.owner-checkbox-grid span {
+  display: block;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #dbe1e8;
+  border-radius: 9px;
+}
+
+.owner-checkbox-grid input:checked + span {
+  background: #f0fdf4;
+  border-color: #16a34a;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.owner-photo-placeholder {
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  text-align: center;
+  color: #64748b;
+}
+
+.owner-photo-placeholder > span {
+  font-size: 45px;
+}
+
+.owner-photo-placeholder h3 {
+  margin: 10px 0 5px;
+  color: #334155;
+}
+
+.owner-photo-placeholder small {
+  margin-top: 5px;
+}
+
+.save-mess-btn {
+  padding: 15px;
+  border: none;
+  border-radius: 9px;
+  background: #16a34a;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* MANAGE MESS */
+
+.manage-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.dashboard-back-btn,
+.add-new-mess-btn {
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.dashboard-back-btn {
+  background: white;
+  border: 1px solid #dbe1e8;
+}
+
+.add-new-mess-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.owner-empty-state {
+  padding: 80px 20px;
+  text-align: center;
+  background: white;
+  border: 1px dashed #cbd5e1;
+  border-radius: 15px;
+}
+
+.owner-empty-state > span {
+  font-size: 55px;
+}
+
+.owner-empty-state h2 {
+  margin: 13px 0 7px;
+}
+
+.owner-empty-state p {
+  color: #64748b;
+}
+
+.owner-empty-state a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 11px 18px;
+  border-radius: 8px;
+  background: #16a34a;
+  color: white;
+  font-weight: 700;
+}
+
+.owner-mess-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.owner-mess-card {
+  display: grid;
+  grid-template-columns:
+    190px 1fr auto;
+  gap: 22px;
+  align-items: center;
+  overflow: hidden;
+  padding-right: 25px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.owner-mess-image {
+  height: 165px;
+  background: #eaf7ee;
+}
+
+.owner-mess-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.owner-mess-image > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #64748b;
+}
+
+.owner-mess-image span {
+  font-size: 40px;
+}
+
+.owner-mess-content > p {
+  margin: 7px 0;
+  color: #64748b;
+}
+
+.owner-status {
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.owner-mess-stats {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.owner-card-actions button {
+  padding: 9px 13px;
+  border: 1px solid #fecaca;
+  border-radius: 7px;
+  background: #fff;
+  color: #dc2626;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+  .owner-stats,
+  .owner-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-checkbox-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .owner-mess-card {
+    grid-template-columns: 140px 1fr;
+    padding-right: 15px;
+  }
+
+  .owner-card-actions {
+    grid-column: 1 / -1;
+    padding: 0 15px 15px;
+  }
+}
+
+@media (max-width: 550px) {
+  .owner-dashboard-header,
+  .add-mess-heading,
+  .manage-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .owner-checkbox-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-mess-card {
+    display: block;
+    padding: 0;
+  }
+
+  .owner-mess-image {
+    height: 200px;
+  }
+
+  .owner-mess-content {
+    padding: 20px;
+  }
+
+  .owner-card-actions {
+    padding: 0 20px 20px;
+  }
+}
