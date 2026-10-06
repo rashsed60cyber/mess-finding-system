@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import messes from "../data/messes";
+import getAllMesses from "../utils/getAllMesses";
 import { getRecommendations }
   from "../utils/recommendation";
 
@@ -14,6 +14,7 @@ const initialPreferences = {
 };
 
 function BestMatch() {
+  const messes = getAllMesses();
 
   const [preferences, setPreferences] =
     useState(initialPreferences);
