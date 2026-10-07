@@ -1,4 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useEffect,
+  useState
+} from "react";
 
 export const AuthContext = createContext(null);
 
@@ -6,56 +10,120 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /* =========================
+     LOAD EXISTING SESSION
+  ========================= */
   useEffect(() => {
     try {
-      const savedUser = localStorage.getItem("messFinderCurrentUser");
+      const savedStudent = localStorage.getItem(
+        "messFinderCurrentUser"
+      );
 
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
+      const savedOwner = localStorage.getItem(
+        "messFinderCurrentOwner"
+      );
+
+      if (savedOwner) {
+        const owner = JSON.parse(savedOwner);
+
+        setUser({
+          ...owner,
+          role: "owner"
+        });
+      } else if (savedStudent) {
+        const student = JSON.parse(savedStudent);
+
+        setUser({
+          ...student,
+          role: student.role || "student"
+        });
       }
     } catch (error) {
-      console.error("Failed to load user:", error);
-      localStorage.removeItem("messFinderCurrentUser");
+      console.error(
+        "Failed to load login session:",
+        error
+      );
+
+      localStorage.removeItem(
+        "messFinderCurrentUser"
+      );
+
+      localStorage.removeItem(
+        "messFinderCurrentOwner"
+      );
+
+      setUser(null);
     } finally {
       setLoading(false);
     }
   }, []);
 
+  /* =========================
+     STUDENT REGISTER
+  ========================= */
   const register = (userData) => {
-    const savedUsers =
-      JSON.parse(localStorage.getItem("messFinderUsers")) || [];
+    let savedUsers = [];
+
+    try {
+      savedUsers =
+        JSON.parse(
+          localStorage.getItem(
+            "messFinderUsers"
+          )
+        ) || [];
+    } catch {
+      savedUsers = [];
+    }
+
+    const email = userData.email
+      .trim()
+      .toLowerCase();
 
     const emailExists = savedUsers.some(
       (item) =>
-        item.email.toLowerCase() === userData.email.toLowerCase()
+        item.email
+          .trim()
+          .toLowerCase() === email
     );
 
     if (emailExists) {
       return {
         success: false,
-        message: "An account with this email already exists."
+        message:
+          "An account with this email already exists."
       };
     }
 
     const newUser = {
       id: Date.now(),
       name: userData.name.trim(),
-      email: userData.email.trim(),
+      email,
       password: userData.password,
       role: "student"
     };
 
     localStorage.setItem(
       "messFinderUsers",
-      JSON.stringify([...savedUsers, newUser])
+      JSON.stringify([
+        ...savedUsers,
+        newUser
+      ])
     );
 
     const sessionUser = {
       id: newUser.id,
       name: newUser.name,
       email: newUser.email,
-      role: newUser.role
+      role: "student"
     };
+
+    /*
+      Only one account type should
+      remain logged in at a time.
+    */
+    localStorage.removeItem(
+      "messFinderCurrentOwner"
+    );
 
     localStorage.setItem(
       "messFinderCurrentUser",
@@ -69,20 +137,41 @@ function AuthProvider({ children }) {
     };
   };
 
+  /* =========================
+     STUDENT LOGIN
+  ========================= */
   const login = (email, password) => {
-    const savedUsers =
-      JSON.parse(localStorage.getItem("messFinderUsers")) || [];
+    let savedUsers = [];
+
+    try {
+      savedUsers =
+        JSON.parse(
+          localStorage.getItem(
+            "messFinderUsers"
+          )
+        ) || [];
+    } catch {
+      savedUsers = [];
+    }
+
+    const cleanEmail = email
+      .trim()
+      .toLowerCase();
 
     const foundUser = savedUsers.find(
       (item) =>
-        item.email.toLowerCase() === email.trim().toLowerCase() &&
+        item.email
+          .trim()
+          .toLowerCase() ===
+          cleanEmail &&
         item.password === password
     );
 
     if (!foundUser) {
       return {
         success: false,
-        message: "Invalid email or password."
+        message:
+          "Invalid email or password."
       };
     }
 
@@ -90,8 +179,12 @@ function AuthProvider({ children }) {
       id: foundUser.id,
       name: foundUser.name,
       email: foundUser.email,
-      role: foundUser.role
+      role: "student"
     };
+
+    localStorage.removeItem(
+      "messFinderCurrentOwner"
+    );
 
     localStorage.setItem(
       "messFinderCurrentUser",
@@ -105,19 +198,78 @@ function AuthProvider({ children }) {
     };
   };
 
+  /* =========================
+     OWNER SESSION
+  ========================= */
+  const loginOwner = (ownerData) => {
+    const sessionOwner = {
+      id: ownerData.id,
+      name: ownerData.name,
+      email: ownerData.email,
+      phone: ownerData.phone || "",
+      role: "owner"
+    };
+
+    /*
+      Remove student session so
+      both cannot be active together.
+    */
+    localStorage.removeItem(
+      "messFinderCurrentUser"
+    );
+
+    localStorage.setItem(
+      "messFinderCurrentOwner",
+      JSON.stringify(sessionOwner)
+    );
+
+    setUser(sessionOwner);
+
+    return {
+      success: true
+    };
+  };
+
+  /* =========================
+     LOGOUT
+  ========================= */
   const logout = () => {
-    localStorage.removeItem("messFinderCurrentUser");
+    localStorage.removeItem(
+      "messFinderCurrentUser"
+    );
+
+    localStorage.removeItem(
+      "messFinderCurrentOwner"
+    );
+
     setUser(null);
   };
+
+  /* =========================
+     AUTH HELPERS
+  ========================= */
+  const isStudent =
+    user?.role === "student";
+
+  const isOwner =
+    user?.role === "owner";
+
+  const isLoggedIn = Boolean(user);
 
   return (
     <AuthContext.Provider
       value={{
         user,
         loading,
+
         register,
         login,
-        logout
+        loginOwner,
+        logout,
+
+        isStudent,
+        isOwner,
+        isLoggedIn
       }}
     >
       {children}
