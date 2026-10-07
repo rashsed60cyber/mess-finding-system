@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 import getAllMesses from "../utils/getAllMesses";
-import { getRecommendations }
-  from "../utils/recommendation";
+import { getRecommendations } from "../utils/recommendation";
 
 const initialPreferences = {
   maxRent: "",
@@ -10,6 +9,7 @@ const initialPreferences = {
   gender: "",
   wifi: false,
   meal: false,
+  gas: false,
   singleRoom: false
 };
 
@@ -31,7 +31,6 @@ function BestMatch() {
 
     setPreferences((previous) => ({
       ...previous,
-
       [name]:
         type === "checkbox"
           ? checked
@@ -180,6 +179,20 @@ function BestMatch() {
               <span>
                 🍚
                 <strong>Meal</strong>
+              </span>
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                name="gas"
+                checked={preferences.gas}
+                onChange={handleChange}
+              />
+
+              <span>
+                🔥
+                <strong>Gas</strong>
               </span>
             </label>
 
