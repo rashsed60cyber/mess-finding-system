@@ -3947,3 +3947,305 @@ main {
     flex-direction: column;
   }
 }
+/* =========================================
+   PROCTOR MESS VISITS
+========================================= */
+
+.mess-visits-page {
+  min-height: 80vh;
+  padding: 55px 20px 80px;
+  background: #f8fafc;
+}
+
+.mess-visits-container {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.mess-visits-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.mess-visits-header h1 {
+  margin: 14px 0 6px;
+  color: #0f172a;
+  font-size: clamp(32px, 5vw, 44px);
+}
+
+.mess-visits-header p {
+  max-width: 650px;
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.visit-stats-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.visit-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  background: white;
+}
+
+.visit-stat-card > span {
+  font-size: 28px;
+}
+
+.visit-stat-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 25px;
+}
+
+.visit-stat-card p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.visit-filter-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 20px 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  background: white;
+}
+
+.visit-filter-card h2 {
+  margin: 0 0 4px;
+  color: #0f172a;
+}
+
+.visit-filter-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.visit-filter-card select {
+  min-width: 180px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  color: #0f172a;
+  font: inherit;
+}
+
+.visit-list {
+  display: grid;
+  gap: 15px;
+}
+
+.visit-card {
+  display: grid;
+  grid-template-columns: 145px 1fr;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 17px;
+  background: white;
+  box-shadow:
+    0 7px 24px
+    rgba(15, 23, 42, 0.035);
+}
+
+.visit-date-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: 20px;
+  background: #f0fdf4;
+  text-align: center;
+}
+
+.visit-date-box span {
+  margin-bottom: 8px;
+  color: #16a34a;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.visit-date-box strong {
+  color: #0f172a;
+  font-size: 16px;
+}
+
+.visit-date-box small {
+  margin-top: 6px;
+  color: #64748b;
+}
+
+.visit-main-info {
+  padding: 23px;
+}
+
+.visit-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.visit-title-row h2 {
+  margin: 7px 0 3px;
+  color: #0f172a;
+  font-size: 21px;
+}
+
+.visit-title-row p {
+  margin: 0;
+  color: #64748b;
+}
+
+.visit-status {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.visit-status.scheduled {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.visit-status.completed {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.visit-status.cancelled {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.visit-meta-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.visit-meta-grid > div {
+  padding: 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.visit-meta-grid span,
+.visit-notes span {
+  display: block;
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.visit-meta-grid strong {
+  color: #0f172a;
+  font-size: 13px;
+}
+
+.visit-notes {
+  margin-top: 12px;
+  padding: 13px;
+  border-left: 3px solid #22c55e;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.visit-notes p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.55;
+}
+
+.visit-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 17px;
+}
+
+.visit-empty {
+  padding: 70px 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 17px;
+  background: white;
+  text-align: center;
+}
+
+.visit-empty > div {
+  font-size: 42px;
+}
+
+.visit-empty h2 {
+  margin: 13px 0 6px;
+  color: #0f172a;
+}
+
+.visit-empty p {
+  margin: 0 0 22px;
+  color: #64748b;
+}
+
+@media (max-width: 850px) {
+  .visit-stats-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .visit-card {
+    grid-template-columns: 1fr;
+  }
+
+  .visit-date-box {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .mess-visits-page {
+    padding: 40px 14px 60px;
+  }
+
+  .mess-visits-header,
+  .visit-filter-card,
+  .visit-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .visit-stats-grid,
+  .visit-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .visit-filter-card select {
+    width: 100%;
+  }
+
+  .visit-main-info {
+    padding: 18px;
+  }
+}
