@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 function AdminLogin() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -25,21 +27,33 @@ function AdminLogin() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const email = formData.email.trim().toLowerCase();
-    const password = formData.password;
+    const email =
+      formData.email.trim().toLowerCase();
 
-    /*
-      Demo Admin Account
-
-      Email: admin@messfinder.com
-      Password: admin123
-    */
+    const password =
+      formData.password;
 
     if (
       email === "admin@messfinder.com" &&
       password === "admin123"
     ) {
+      /*
+        Only one role should be active
+        at a time.
+      */
+
+      logout();
+
+      localStorage.removeItem(
+        "messFinderCurrentOwner"
+      );
+
+      localStorage.removeItem(
+        "messFinderCurrentProctor"
+      );
+
       const adminSession = {
+        id: "admin-1",
         name: "Administrator",
         email: "admin@messfinder.com",
         role: "admin",
@@ -51,21 +65,34 @@ function AdminLogin() {
       );
 
       navigate("/admin");
+
+      /*
+        Refresh so Navbar immediately
+        detects the new admin session.
+      */
+
+      window.location.reload();
+
       return;
     }
 
-    setError("Invalid admin email or password.");
+    setError(
+      "Invalid admin email or password."
+    );
   };
 
   return (
     <div className="auth-page">
+
       <div className="auth-card">
 
         <div className="auth-logo">
           🛡️
         </div>
 
-        <h1>Admin Login</h1>
+        <h1>
+          Admin Login
+        </h1>
 
         <p className="auth-subtitle">
           Sign in to access the MessFinder
@@ -81,6 +108,7 @@ function AdminLogin() {
         <form onSubmit={handleSubmit}>
 
           <div className="auth-field">
+
             <label>
               Admin Email
             </label>
@@ -91,11 +119,14 @@ function AdminLogin() {
               placeholder="admin@messfinder.com"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="email"
               required
             />
+
           </div>
 
           <div className="auth-field">
+
             <label>
               Password
             </label>
@@ -106,8 +137,10 @@ function AdminLogin() {
               placeholder="Enter admin password"
               value={formData.password}
               onChange={handleChange}
+              autoComplete="current-password"
               required
             />
+
           </div>
 
           <button
@@ -119,7 +152,15 @@ function AdminLogin() {
 
         </form>
 
+        <p className="auth-bottom-text">
+          ←{" "}
+          <Link to="/choose-login">
+            Back to Login Options
+          </Link>
+        </p>
+
       </div>
+
     </div>
   );
 }
