@@ -2415,3 +2415,33 @@ a {
     flex-direction: column;
   }
 }
+/* ========================================
+   NAVBAR POSITION FIX
+   Prevent navbar from covering page content
+======================================== */
+
+.navbar {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  width: 100%;
+  z-index: 100;
+}
+
+.nav-container {
+  position: relative;
+}
+
+/* Make sure page sections stay above normal flow */
+main {
+  position: relative;
+}
+
+/* Mobile navbar position fix */
+@media (max-width: 768px) {
+  .navbar {
+    position: relative !important;
+    top: auto !important;
+  }
+}
