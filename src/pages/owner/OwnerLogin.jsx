@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useNavigate
+} from "react-router-dom";
+
+import useAuth from "../../hooks/useAuth";
 
 function OwnerLogin() {
   const navigate = useNavigate();
 
+  const { loginOwner } = useAuth();
+
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
 
   const [error, setError] = useState("");
@@ -16,7 +23,7 @@ function OwnerLogin() {
 
     setFormData((previous) => ({
       ...previous,
-      [name]: value,
+      [name]: value
     }));
 
     setError("");
@@ -25,11 +32,17 @@ function OwnerLogin() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const email = formData.email.trim().toLowerCase();
+    const email = formData.email
+      .trim()
+      .toLowerCase();
+
     const password = formData.password;
 
     if (!email || !password) {
-      setError("Please enter your email and password.");
+      setError(
+        "Please enter your email and password."
+      );
+
       return;
     }
 
@@ -37,36 +50,55 @@ function OwnerLogin() {
 
     try {
       owners =
-        JSON.parse(localStorage.getItem("messFinderOwners")) || [];
+        JSON.parse(
+          localStorage.getItem(
+            "messFinderOwners"
+          )
+        ) || [];
     } catch {
       owners = [];
     }
 
     const owner = owners.find(
       (item) =>
-        item.email.toLowerCase() === email &&
+        item.email
+          .trim()
+          .toLowerCase() === email &&
         item.password === password
     );
 
     if (!owner) {
-      setError("Invalid email or password.");
+      setError(
+        "Invalid email or password."
+      );
+
       return;
     }
 
-    localStorage.setItem(
-      "messFinderCurrentOwner",
-      JSON.stringify(owner)
-    );
+    /*
+      AuthContext will:
+      1. Create the owner session
+      2. Save messFinderCurrentOwner
+      3. Remove any student session
+      4. Update Navbar immediately
+    */
+    loginOwner(owner);
 
     navigate("/owner/dashboard");
   };
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-logo">🏢</div>
 
-        <h1>Owner Login</h1>
+      <div className="auth-card">
+
+        <div className="auth-logo">
+          🏢
+        </div>
+
+        <h1>
+          Owner Login
+        </h1>
 
         <p className="auth-subtitle">
           Login to manage your mess listings.
@@ -79,8 +111,12 @@ function OwnerLogin() {
         )}
 
         <form onSubmit={handleSubmit}>
+
           <div className="auth-field">
-            <label>Email Address</label>
+
+            <label>
+              Email Address
+            </label>
 
             <input
               type="email"
@@ -88,12 +124,17 @@ function OwnerLogin() {
               placeholder="owner@example.com"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="email"
               required
             />
+
           </div>
 
           <div className="auth-field">
-            <label>Password</label>
+
+            <label>
+              Password
+            </label>
 
             <input
               type="password"
@@ -101,8 +142,10 @@ function OwnerLogin() {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
+              autoComplete="current-password"
               required
             />
+
           </div>
 
           <button
@@ -111,22 +154,31 @@ function OwnerLogin() {
           >
             Login as Owner
           </button>
+
         </form>
 
         <p className="auth-bottom-text">
+
           Don't have an owner account?{" "}
+
           <Link to="/owner/register">
             Register as Owner
           </Link>
+
         </p>
 
         <p className="auth-bottom-text">
+
           Student?{" "}
+
           <Link to="/login">
             Student Login
           </Link>
+
         </p>
+
       </div>
+
     </div>
   );
 }
