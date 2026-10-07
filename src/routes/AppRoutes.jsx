@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
-import ProtectedAdminRoute from "../components/common/ProtectedAdminRoute";
 
 import Home from "../pages/Home";
 import FindMess from "../pages/FindMess";
@@ -12,6 +11,7 @@ import Compare from "../pages/Compare";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import RoleLogin from "../pages/auth/RoleLogin";
 
 import OwnerLogin from "../pages/owner/OwnerLogin";
 import OwnerRegister from "../pages/owner/OwnerRegister";
@@ -20,7 +20,6 @@ import AddMess from "../pages/owner/AddMess";
 import ManageMess from "../pages/owner/ManageMess";
 import EditMess from "../pages/owner/EditMess";
 
-import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 
 function AppRoutes() {
@@ -31,7 +30,9 @@ function AppRoutes() {
       <main>
         <Routes>
 
-          {/* Public Pages */}
+          {/* =========================
+              PUBLIC PAGES
+          ========================= */}
 
           <Route
             path="/"
@@ -58,7 +59,18 @@ function AppRoutes() {
             element={<Compare />}
           />
 
-          {/* Student Authentication */}
+          {/* =========================
+              ROLE LOGIN SELECTION
+          ========================= */}
+
+          <Route
+            path="/choose-login"
+            element={<RoleLogin />}
+          />
+
+          {/* =========================
+              STUDENT AUTHENTICATION
+          ========================= */}
 
           <Route
             path="/login"
@@ -70,7 +82,9 @@ function AppRoutes() {
             element={<Register />}
           />
 
-          {/* Owner Authentication */}
+          {/* =========================
+              OWNER AUTHENTICATION
+          ========================= */}
 
           <Route
             path="/owner/login"
@@ -82,7 +96,9 @@ function AppRoutes() {
             element={<OwnerRegister />}
           />
 
-          {/* Owner Dashboard */}
+          {/* =========================
+              OWNER DASHBOARD
+          ========================= */}
 
           <Route
             path="/owner/dashboard"
@@ -104,31 +120,25 @@ function AppRoutes() {
             element={<EditMess />}
           />
 
-          {/* Admin Login */}
-
-          <Route
-            path="/admin/login"
-            element={<AdminLogin />}
-          />
-
-          {/* Protected Admin Dashboard */}
+          {/* =========================
+              ADMIN
+          ========================= */}
 
           <Route
             path="/admin"
-            element={
-              <ProtectedAdminRoute>
-                <AdminDashboard />
-              </ProtectedAdminRoute>
-            }
+            element={<AdminDashboard />}
           />
 
-          {/* 404 */}
+          {/* =========================
+              404
+          ========================= */}
 
           <Route
             path="*"
             element={
               <div className="not-found">
                 <h1>404</h1>
+
                 <h2>Page Not Found</h2>
 
                 <p>
