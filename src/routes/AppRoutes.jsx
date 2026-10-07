@@ -1,3 +1,4 @@
+
 import {
   Routes,
   Route,
@@ -27,9 +28,12 @@ import EditMess from "../pages/owner/EditMess";
 import AdminLogin from "../pages/admin/AdminLogin";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 
+import ProctorLogin from "../pages/proctor/ProctorLogin";
+import ProctorDashboard from "../pages/proctor/ProctorDashboard";
+
 
 /* ========================================
-   ADMIN PROTECTED ROUTE
+   ADMIN PROTECTION
 ======================================== */
 
 function AdminProtectedRoute({ children }) {
@@ -45,13 +49,40 @@ function AdminProtectedRoute({ children }) {
     admin = null;
   }
 
-  if (
-    !admin ||
-    admin.role !== "admin"
-  ) {
+  if (!admin || admin.role !== "admin") {
     return (
       <Navigate
         to="/admin/login"
+        replace
+      />
+    );
+  }
+
+  return children;
+}
+
+
+/* ========================================
+   PROCTOR PROTECTION
+======================================== */
+
+function ProctorProtectedRoute({ children }) {
+  let proctor = null;
+
+  try {
+    proctor = JSON.parse(
+      localStorage.getItem(
+        "messFinderCurrentProctor"
+      )
+    );
+  } catch {
+    proctor = null;
+  }
+
+  if (!proctor || proctor.role !== "proctor") {
+    return (
+      <Navigate
+        to="/proctor/login"
         replace
       />
     );
@@ -67,12 +98,9 @@ function AppRoutes() {
       <Navbar />
 
       <main>
-
         <Routes>
 
-          {/* =========================
-              PUBLIC
-          ========================= */}
+          {/* PUBLIC */}
 
           <Route
             path="/"
@@ -100,9 +128,7 @@ function AppRoutes() {
           />
 
 
-          {/* =========================
-              LOGIN SELECTION
-          ========================= */}
+          {/* ROLE SELECTION */}
 
           <Route
             path="/choose-login"
@@ -110,9 +136,7 @@ function AppRoutes() {
           />
 
 
-          {/* =========================
-              STUDENT
-          ========================= */}
+          {/* STUDENT */}
 
           <Route
             path="/login"
@@ -125,9 +149,7 @@ function AppRoutes() {
           />
 
 
-          {/* =========================
-              OWNER
-          ========================= */}
+          {/* OWNER */}
 
           <Route
             path="/owner/login"
@@ -160,9 +182,24 @@ function AppRoutes() {
           />
 
 
-          {/* =========================
-              ADMIN
-          ========================= */}
+          {/* PROCTOR */}
+
+          <Route
+            path="/proctor/login"
+            element={<ProctorLogin />}
+          />
+
+          <Route
+            path="/proctor"
+            element={
+              <ProctorProtectedRoute>
+                <ProctorDashboard />
+              </ProctorProtectedRoute>
+            }
+          />
+
+
+          {/* ADMIN */}
 
           <Route
             path="/admin/login"
@@ -179,15 +216,12 @@ function AppRoutes() {
           />
 
 
-          {/* =========================
-              404
-          ========================= */}
+          {/* 404 */}
 
           <Route
             path="*"
             element={
               <div className="not-found">
-
                 <h1>404</h1>
 
                 <h2>
@@ -195,16 +229,14 @@ function AppRoutes() {
                 </h2>
 
                 <p>
-                  The page you are looking
-                  for does not exist.
+                  The page you are looking for
+                  does not exist.
                 </p>
-
               </div>
             }
           />
 
         </Routes>
-
       </main>
 
       <Footer />
