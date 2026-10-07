@@ -2445,3 +2445,180 @@ main {
     top: auto !important;
   }
 }
+/* ========================================
+   ROLE LOGIN PAGE
+======================================== */
+
+.role-login-page {
+  min-height: 75vh;
+  padding: 70px 20px;
+  background: linear-gradient(
+    135deg,
+    #f4fff8 0%,
+    #f8fbff 55%,
+    #eef5ff 100%
+  );
+}
+
+.role-login-container {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.role-login-heading {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 45px;
+}
+
+.role-login-badge {
+  display: inline-block;
+  padding: 8px 15px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.role-login-heading h1 {
+  margin: 18px 0 10px;
+  font-size: clamp(32px, 5vw, 48px);
+  color: #0f172a;
+}
+
+.role-login-heading p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* 4 ROLE CARDS */
+
+.role-login-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.role-login-card {
+  display: block;
+  padding: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #ffffff;
+  text-decoration: none;
+  color: #0f172a;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.04);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.role-login-card:hover {
+  transform: translateY(-5px);
+  border-color: #22c55e;
+
+  box-shadow:
+    0 18px 45px rgba(15, 23, 42, 0.09);
+}
+
+.role-login-icon {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 16px;
+
+  background: #f0fdf4;
+
+  font-size: 28px;
+}
+
+.role-login-card h2 {
+  margin: 0 0 10px;
+  font-size: 21px;
+  color: #0f172a;
+}
+
+.role-login-card p {
+  min-height: 52px;
+  margin: 0 0 18px;
+
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.role-login-card > span {
+  color: #16a34a;
+  font-weight: 800;
+}
+
+/* BOTTOM REGISTER AREA */
+
+.role-login-footer {
+  margin-top: 35px;
+  padding: 22px;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  text-align: center;
+
+  border: 1px solid #e2e8f0;
+}
+
+.role-login-footer p {
+  margin: 6px 0;
+  color: #64748b;
+}
+
+.role-login-footer a {
+  color: #16a34a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.role-login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .role-login-page {
+    padding: 45px 16px;
+  }
+
+  .role-login-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .role-login-heading {
+    margin-bottom: 30px;
+  }
+
+  .role-login-heading h1 {
+    font-size: 34px;
+  }
+
+  .role-login-card {
+    padding: 24px;
+  }
+
+  .role-login-card p {
+    min-height: auto;
+  }
+}
