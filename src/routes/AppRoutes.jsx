@@ -1,8 +1,7 @@
-
 import {
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 
 import Navbar from "../components/common/Navbar";
@@ -18,6 +17,8 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import RoleLogin from "../pages/auth/RoleLogin";
 
+import StudentSupport from "../pages/student/StudentSupport";
+
 import OwnerLogin from "../pages/owner/OwnerLogin";
 import OwnerRegister from "../pages/owner/OwnerRegister";
 import OwnerDashboard from "../pages/owner/OwnerDashboard";
@@ -30,6 +31,36 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 
 import ProctorLogin from "../pages/proctor/ProctorLogin";
 import ProctorDashboard from "../pages/proctor/ProctorDashboard";
+
+
+/* ========================================
+   STUDENT PROTECTION
+======================================== */
+
+function StudentProtectedRoute({ children }) {
+  let student = null;
+
+  try {
+    student = JSON.parse(
+      localStorage.getItem(
+        "messFinderCurrentUser"
+      )
+    );
+  } catch {
+    student = null;
+  }
+
+  if (!student) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  return children;
+}
 
 
 /* ========================================
@@ -49,7 +80,10 @@ function AdminProtectedRoute({ children }) {
     admin = null;
   }
 
-  if (!admin || admin.role !== "admin") {
+  if (
+    !admin ||
+    admin.role !== "admin"
+  ) {
     return (
       <Navigate
         to="/admin/login"
@@ -79,7 +113,10 @@ function ProctorProtectedRoute({ children }) {
     proctor = null;
   }
 
-  if (!proctor || proctor.role !== "proctor") {
+  if (
+    !proctor ||
+    proctor.role !== "proctor"
+  ) {
     return (
       <Navigate
         to="/proctor/login"
@@ -100,7 +137,9 @@ function AppRoutes() {
       <main>
         <Routes>
 
-          {/* PUBLIC */}
+          {/* =========================
+              PUBLIC
+          ========================= */}
 
           <Route
             path="/"
@@ -128,7 +167,9 @@ function AppRoutes() {
           />
 
 
-          {/* ROLE SELECTION */}
+          {/* =========================
+              LOGIN SELECTION
+          ========================= */}
 
           <Route
             path="/choose-login"
@@ -136,7 +177,9 @@ function AppRoutes() {
           />
 
 
-          {/* STUDENT */}
+          {/* =========================
+              STUDENT
+          ========================= */}
 
           <Route
             path="/login"
@@ -148,8 +191,19 @@ function AppRoutes() {
             element={<Register />}
           />
 
+          <Route
+            path="/student-support"
+            element={
+              <StudentProtectedRoute>
+                <StudentSupport />
+              </StudentProtectedRoute>
+            }
+          />
 
-          {/* OWNER */}
+
+          {/* =========================
+              OWNER
+          ========================= */}
 
           <Route
             path="/owner/login"
@@ -182,7 +236,9 @@ function AppRoutes() {
           />
 
 
-          {/* PROCTOR */}
+          {/* =========================
+              PROCTOR
+          ========================= */}
 
           <Route
             path="/proctor/login"
@@ -199,7 +255,9 @@ function AppRoutes() {
           />
 
 
-          {/* ADMIN */}
+          {/* =========================
+              ADMIN
+          ========================= */}
 
           <Route
             path="/admin/login"
@@ -216,7 +274,9 @@ function AppRoutes() {
           />
 
 
-          {/* 404 */}
+          {/* =========================
+              404
+          ========================= */}
 
           <Route
             path="*"
