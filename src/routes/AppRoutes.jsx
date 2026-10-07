@@ -31,6 +31,9 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 
 import ProctorLogin from "../pages/proctor/ProctorLogin";
 import ProctorDashboard from "../pages/proctor/ProctorDashboard";
+import ProctorReports from "../pages/proctor/ProctorReports";
+import ProctorCaseDetails from "../pages/proctor/ProctorCaseDetails";
+import MessVisits from "../pages/proctor/MessVisits";
 
 
 /* ========================================
@@ -129,6 +132,10 @@ function ProctorProtectedRoute({ children }) {
 }
 
 
+/* ========================================
+   APP ROUTES
+======================================== */
+
 function AppRoutes() {
   return (
     <>
@@ -202,7 +209,7 @@ function AppRoutes() {
 
 
           {/* =========================
-              OWNER
+              MESS OWNER
           ========================= */}
 
           <Route
@@ -237,7 +244,7 @@ function AppRoutes() {
 
 
           {/* =========================
-              PROCTOR
+              UNIVERSITY PROCTOR
           ========================= */}
 
           <Route
@@ -250,6 +257,33 @@ function AppRoutes() {
             element={
               <ProctorProtectedRoute>
                 <ProctorDashboard />
+              </ProctorProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/proctor/reports"
+            element={
+              <ProctorProtectedRoute>
+                <ProctorReports />
+              </ProctorProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/proctor/reports/:caseId"
+            element={
+              <ProctorProtectedRoute>
+                <ProctorCaseDetails />
+              </ProctorProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/proctor/visits"
+            element={
+              <ProctorProtectedRoute>
+                <MessVisits />
               </ProctorProtectedRoute>
             }
           />
@@ -282,6 +316,7 @@ function AppRoutes() {
             path="*"
             element={
               <div className="not-found">
+
                 <h1>404</h1>
 
                 <h2>
@@ -292,6 +327,7 @@ function AppRoutes() {
                   The page you are looking for
                   does not exist.
                 </p>
+
               </div>
             }
           />
