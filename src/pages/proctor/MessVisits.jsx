@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function MessVisits() {
   const [filter, setFilter] = useState("All");
 
-  const reports = useMemo(() => {
+  const [reports, setReports] = useState(() => {
     try {
       const stored = JSON.parse(
         localStorage.getItem("messFinderWelfareReports")
@@ -14,7 +14,17 @@ function MessVisits() {
     } catch {
       return [];
     }
-  }, []);
+  });
+
+  const [activeVisitId, setActiveVisitId] = useState(null);
+
+  const [visitForm, setVisitForm] = useState({
+    findings: "",
+    followUpRequired: false,
+    followUpNotes: "",
+  });
+
+  const [message, setMessage] = useState("");
 
   const allVisits = useMemo(() => {
     const visits = [];
@@ -28,32 +38,19 @@ function MessVisits() {
         visits.push({
           ...visit,
 
-          caseId:
-            report.caseId ||
-            report.id,
+          caseId: report.caseId || report.id,
 
-          messId:
-            report.messId,
+          messId: report.messId,
 
-          messName:
-            report.messName ||
-            "Unknown Mess",
+          messName: report.messName || "Unknown Mess",
 
-          messArea:
-            report.messArea ||
-            "",
+          messArea: report.messArea || "",
 
-          category:
-            report.category ||
-            "Other",
+          category: report.category || "Other",
 
-          priority:
-            report.priority ||
-            "Medium",
+          priority: report.priority || "Medium",
 
-          caseStatus:
-            report.status ||
-            "Pending",
+          caseStatus: report.status || "Pending",
         });
       });
     });
@@ -88,13 +85,11 @@ function MessVisits() {
   ).length;
 
   const completedCount = allVisits.filter(
-    (visit) =>
-      visit.status === "Completed"
+    (visit) => visit.status === "Completed"
   ).length;
 
   const cancelledCount = allVisits.filter(
-    (visit) =>
-      visit.status === "Cancelled"
+    (visit) => visit.status === "Cancelled"
   ).length;
 
   const formatVisitDate = (date, time) => {
@@ -115,12 +110,205 @@ function MessVisits() {
     return parsed.toLocaleString();
   };
 
+  const formatDate = (value) => {
+    if (!value) {
+      return "";
+    }
+
+    const parsed = new Date(value);
+
+    if (Number.isNaN(parsed.getTime())) {
+      return value;
+    }
+
+    return parsed.toLocaleString();
+  };
+
+  const openVisitResult = (visit) => {
+    setActiveVisitId(visit.id);
+
+    setVisitForm({
+      findings: visit.findings || "",
+      followUpRequired: Boolean(visit.followUpRequired),
+      followUpNotes: visit.followUpNotes || "",
+    });
+
+    setMessage("");
+  };
+
+  const closeVisitResult = () => {
+    setActiveVisitId(null);
+
+    setVisitForm({
+      findings: "",
+      followUpRequired: false,
+      followUpNotes: "",
+    });
+
+    setMessage("");
+  };
+
+  const handleVisitFormChange = (event) => {
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = event.target;
+
+    setVisitForm((previous) => ({
+      ...previous,
+      [name]:
+        type === "checkbox"
+          ? checked
+          : value,
+    }));
+
+    setMessage("");
+  };
+
+  const updateVisit = ({
+    caseId,
+    visitId,
+    visitStatus,
+    historyAction,
+  }) => {
+    const now = new Date().toISOString();
+
+    const updatedReports = reports.map((report) => {
+      const reportCaseId =
+        report.caseId || report.id;
+
+      if (
+        String(reportCaseId) !==
+        String(caseId)
+      ) {
+        return report;
+      }
+
+      const currentVisits = Array.isArray(report.visits)
+        ? report.visits
+        : [];
+
+      const updatedVisits = currentVisits.map((visit) => {
+        if (String(visit.id) !== String(visitId)) {
+          return visit;
+        }
+
+        return {
+          ...visit,
+
+          status: visitStatus,
+
+          findings: visitForm.findings.trim(),
+
+          followUpRequired:
+            visitForm.followUpRequired,
+
+          followUpNotes:
+            visitForm.followUpNotes.trim(),
+
+          completedAt:
+            visitStatus === "Completed"
+              ? now
+              : visit.completedAt || null,
+
+          cancelledAt:
+            visitStatus === "Cancelled"
+              ? now
+              : visit.cancelledAt || null,
+
+          updatedAt: now,
+        };
+      });
+
+      const history = Array.isArray(report.history)
+        ? report.history
+        : [];
+
+      return {
+        ...report,
+
+        visits: updatedVisits,
+
+        updatedAt: now,
+
+        history: [
+          ...history,
+          {
+            action: historyAction,
+            status: report.status || "Visit Scheduled",
+            date: now,
+          },
+        ],
+      };
+    });
+
+    localStorage.setItem(
+      "messFinderWelfareReports",
+      JSON.stringify(updatedReports)
+    );
+
+    setReports(updatedReports);
+
+    setActiveVisitId(null);
+
+    setVisitForm({
+      findings: "",
+      followUpRequired: false,
+      followUpNotes: "",
+    });
+  };
+
+  const completeVisit = (visit) => {
+    if (visitForm.findings.trim().length < 10) {
+      setMessage(
+        "Please write visit findings of at least 10 characters."
+      );
+
+      return;
+    }
+
+    updateVisit({
+      caseId: visit.caseId,
+      visitId: visit.id,
+      visitStatus: "Completed",
+      historyAction: "Mess Visit Completed",
+    });
+  };
+
+  const cancelVisit = (visit) => {
+    const reason = visitForm.findings.trim();
+
+    if (reason.length < 5) {
+      setMessage(
+        "Please write a short reason before cancelling the visit."
+      );
+
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to cancel this mess visit?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    updateVisit({
+      caseId: visit.caseId,
+      visitId: visit.id,
+      visitStatus: "Cancelled",
+      historyAction: "Mess Visit Cancelled",
+    });
+  };
+
   return (
     <div className="mess-visits-page">
       <div className="mess-visits-container">
 
         <div className="mess-visits-header">
-
           <div>
             <span className="support-badge">
               📍 PROCTOR MONITORING
@@ -129,9 +317,9 @@ function MessVisits() {
             <h1>Mess Visits</h1>
 
             <p>
-              Review scheduled inspections and
-              follow-up visits related to student
-              welfare cases.
+              Review scheduled inspections, record visit
+              findings and manage follow-up actions related
+              to student welfare cases.
             </p>
           </div>
 
@@ -141,7 +329,6 @@ function MessVisits() {
           >
             ← Dashboard
           </Link>
-
         </div>
 
 
@@ -151,49 +338,34 @@ function MessVisits() {
             <span>📍</span>
 
             <div>
-              <strong>
-                {allVisits.length}
-              </strong>
-
+              <strong>{allVisits.length}</strong>
               <p>Total Visits</p>
             </div>
           </div>
-
 
           <div className="visit-stat-card">
             <span>🗓️</span>
 
             <div>
-              <strong>
-                {scheduledCount}
-              </strong>
-
+              <strong>{scheduledCount}</strong>
               <p>Scheduled</p>
             </div>
           </div>
-
 
           <div className="visit-stat-card">
             <span>✅</span>
 
             <div>
-              <strong>
-                {completedCount}
-              </strong>
-
+              <strong>{completedCount}</strong>
               <p>Completed</p>
             </div>
           </div>
-
 
           <div className="visit-stat-card">
             <span>✕</span>
 
             <div>
-              <strong>
-                {cancelledCount}
-              </strong>
-
+              <strong>{cancelledCount}</strong>
               <p>Cancelled</p>
             </div>
           </div>
@@ -208,10 +380,7 @@ function MessVisits() {
 
             <p>
               {filteredVisits.length} visit
-              {filteredVisits.length === 1
-                ? ""
-                : "s"}{" "}
-              shown
+              {filteredVisits.length === 1 ? "" : "s"} shown
             </p>
           </div>
 
@@ -249,13 +418,10 @@ function MessVisits() {
 
               <div>📍</div>
 
-              <h2>
-                No Mess Visits Yet
-              </h2>
+              <h2>No Mess Visits Found</h2>
 
               <p>
-                Visits scheduled from welfare
-                cases will appear here.
+                No visits match the selected filter.
               </p>
 
               <Link
@@ -267,8 +433,14 @@ function MessVisits() {
 
             </div>
           ) : (
-            filteredVisits.map(
-              (visit, index) => (
+            filteredVisits.map((visit, index) => {
+              const visitStatus =
+                visit.status || "Scheduled";
+
+              const isEditing =
+                activeVisitId === visit.id;
+
+              return (
                 <article
                   className="visit-card"
                   key={
@@ -282,13 +454,11 @@ function MessVisits() {
                     <span>VISIT</span>
 
                     <strong>
-                      {visit.date ||
-                        "No date"}
+                      {visit.date || "No date"}
                     </strong>
 
                     <small>
-                      {visit.time ||
-                        "No time"}
+                      {visit.time || "No time"}
                     </small>
 
                   </div>
@@ -303,9 +473,7 @@ function MessVisits() {
                           {visit.caseId}
                         </span>
 
-                        <h2>
-                          {visit.messName}
-                        </h2>
+                        <h2>{visit.messName}</h2>
 
                         <p>
                           {visit.messArea ||
@@ -314,16 +482,9 @@ function MessVisits() {
                       </div>
 
                       <span
-                        className={`visit-status ${
-                          (
-                            visit.status ||
-                            "Scheduled"
-                          )
-                            .toLowerCase()
-                        }`}
+                        className={`visit-status ${visitStatus.toLowerCase()}`}
                       >
-                        {visit.status ||
-                          "Scheduled"}
+                        {visitStatus}
                       </span>
 
                     </div>
@@ -384,30 +545,253 @@ function MessVisits() {
                           Visit Purpose / Notes
                         </span>
 
-                        <p>
-                          {visit.notes}
-                        </p>
+                        <p>{visit.notes}</p>
 
                       </div>
                     )}
 
 
-                    <div className="visit-card-footer">
+                    {visitStatus === "Completed" &&
+                      visit.findings && (
+                        <div className="visit-findings-display">
 
-                      <Link
-                        to={`/proctor/reports/${visit.caseId}`}
-                        className="review-case-btn"
-                      >
-                        Open Related Case →
-                      </Link>
+                          <span>
+                            ✅ Visit Findings
+                          </span>
 
-                    </div>
+                          <p>
+                            {visit.findings}
+                          </p>
+
+                          {visit.followUpRequired && (
+                            <div className="visit-followup-display">
+                              <strong>
+                                Follow-up Required
+                              </strong>
+
+                              <p>
+                                {visit.followUpNotes ||
+                                  "Additional follow-up is required."}
+                              </p>
+                            </div>
+                          )}
+
+                          {visit.completedAt && (
+                            <small>
+                              Completed:{" "}
+                              {formatDate(
+                                visit.completedAt
+                              )}
+                            </small>
+                          )}
+
+                        </div>
+                      )}
+
+
+                    {visitStatus === "Cancelled" &&
+                      visit.findings && (
+                        <div className="visit-cancel-display">
+
+                          <span>
+                            Visit Cancellation Note
+                          </span>
+
+                          <p>
+                            {visit.findings}
+                          </p>
+
+                          {visit.cancelledAt && (
+                            <small>
+                              Cancelled:{" "}
+                              {formatDate(
+                                visit.cancelledAt
+                              )}
+                            </small>
+                          )}
+
+                        </div>
+                      )}
+
+
+                    {visitStatus === "Scheduled" &&
+                      !isEditing && (
+                        <div className="visit-card-footer">
+
+                          <button
+                            type="button"
+                            className="visit-record-btn"
+                            onClick={() =>
+                              openVisitResult(visit)
+                            }
+                          >
+                            📝 Record Visit Result
+                          </button>
+
+                          <Link
+                            to={`/proctor/reports/${visit.caseId}`}
+                            className="review-case-btn"
+                          >
+                            Open Related Case →
+                          </Link>
+
+                        </div>
+                      )}
+
+
+                    {visitStatus !== "Scheduled" && (
+                      <div className="visit-card-footer">
+
+                        <Link
+                          to={`/proctor/reports/${visit.caseId}`}
+                          className="review-case-btn"
+                        >
+                          Open Related Case →
+                        </Link>
+
+                      </div>
+                    )}
+
+
+                    {visitStatus === "Scheduled" &&
+                      isEditing && (
+                        <div className="visit-result-panel">
+
+                          <div className="visit-result-heading">
+
+                            <div>
+                              <h3>
+                                Record Visit Result
+                              </h3>
+
+                              <p>
+                                Record only verified observations
+                                from the visit.
+                              </p>
+                            </div>
+
+                            <button
+                              type="button"
+                              className="visit-close-btn"
+                              onClick={closeVisitResult}
+                              aria-label="Close visit result form"
+                            >
+                              ✕
+                            </button>
+
+                          </div>
+
+
+                          {message && (
+                            <div className="visit-result-message">
+                              {message}
+                            </div>
+                          )}
+
+
+                          <div className="visit-result-field">
+
+                            <label htmlFor={`findings-${visit.id}`}>
+                              Visit Findings
+                            </label>
+
+                            <textarea
+                              id={`findings-${visit.id}`}
+                              name="findings"
+                              rows="5"
+                              placeholder="Record observations made during the visit..."
+                              value={visitForm.findings}
+                              onChange={handleVisitFormChange}
+                            />
+
+                          </div>
+
+
+                          <label className="visit-followup-check">
+
+                            <input
+                              type="checkbox"
+                              name="followUpRequired"
+                              checked={
+                                visitForm.followUpRequired
+                              }
+                              onChange={
+                                handleVisitFormChange
+                              }
+                            />
+
+                            <span>
+                              <strong>
+                                Further follow-up required
+                              </strong>
+
+                              <small>
+                                Select this if the matter requires
+                                another review, meeting or visit.
+                              </small>
+                            </span>
+
+                          </label>
+
+
+                          {visitForm.followUpRequired && (
+                            <div className="visit-result-field">
+
+                              <label
+                                htmlFor={`followup-${visit.id}`}
+                              >
+                                Follow-up Notes
+                              </label>
+
+                              <textarea
+                                id={`followup-${visit.id}`}
+                                name="followUpNotes"
+                                rows="3"
+                                placeholder="Describe the recommended follow-up action..."
+                                value={
+                                  visitForm.followUpNotes
+                                }
+                                onChange={
+                                  handleVisitFormChange
+                                }
+                              />
+
+                            </div>
+                          )}
+
+
+                          <div className="visit-result-actions">
+
+                            <button
+                              type="button"
+                              className="visit-complete-btn"
+                              onClick={() =>
+                                completeVisit(visit)
+                              }
+                            >
+                              ✓ Complete Visit
+                            </button>
+
+                            <button
+                              type="button"
+                              className="visit-cancel-btn"
+                              onClick={() =>
+                                cancelVisit(visit)
+                              }
+                            >
+                              Cancel Visit
+                            </button>
+
+                          </div>
+
+                        </div>
+                      )}
 
                   </div>
 
                 </article>
-              )
-            )
+              );
+            })
           )}
 
         </section>
