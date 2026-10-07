@@ -1,23 +1,24 @@
-
 export function calculateMatch(mess, preferences) {
   let score = 0;
   let total = 0;
   const reasons = [];
 
+  // Maximum Rent
   if (preferences.maxRent) {
     total += 30;
 
-    if (mess.rent <= Number(preferences.maxRent)) {
+    if (Number(mess.rent) <= Number(preferences.maxRent)) {
       score += 30;
       reasons.push("Within your budget");
     }
   }
 
+  // Maximum Distance
   if (preferences.maxDistance) {
     total += 25;
 
     if (
-      mess.distance <=
+      Number(mess.distance) <=
       Number(preferences.maxDistance)
     ) {
       score += 25;
@@ -25,6 +26,7 @@ export function calculateMatch(mess, preferences) {
     }
   }
 
+  // Mess Type / Gender
   if (preferences.gender) {
     total += 15;
 
@@ -34,6 +36,7 @@ export function calculateMatch(mess, preferences) {
     }
   }
 
+  // WiFi
   if (preferences.wifi) {
     total += 10;
 
@@ -43,6 +46,7 @@ export function calculateMatch(mess, preferences) {
     }
   }
 
+  // Meal System
   if (preferences.meal) {
     total += 10;
 
@@ -52,6 +56,17 @@ export function calculateMatch(mess, preferences) {
     }
   }
 
+  // Gas
+  if (preferences.gas) {
+    total += 10;
+
+    if (mess.gas) {
+      score += 10;
+      reasons.push("Gas available");
+    }
+  }
+
+  // Single Room
   if (preferences.singleRoom) {
     total += 10;
 
@@ -87,8 +102,18 @@ export function getRecommendations(
         matchReasons: result.reasons
       };
     })
-    .sort(
-      (a, b) =>
-        b.matchScore - a.matchScore
-    );
+    .sort((a, b) => {
+      // First priority: highest match score
+      if (b.matchScore !== a.matchScore) {
+        return b.matchScore - a.matchScore;
+      }
+
+      // Second priority: lower rent
+      if (Number(a.rent) !== Number(b.rent)) {
+        return Number(a.rent) - Number(b.rent);
+      }
+
+      // Third priority: shorter distance
+      return Number(a.distance) - Number(b.distance);
+    });
 }
