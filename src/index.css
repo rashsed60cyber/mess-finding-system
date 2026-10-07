@@ -4249,3 +4249,237 @@ main {
     padding: 18px;
   }
 }
+/* =========================================
+   VISIT RESULT / COMPLETION SYSTEM
+========================================= */
+
+.visit-record-btn {
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 9px;
+  background: #0f172a;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.visit-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.visit-result-panel {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.visit-result-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.visit-result-heading h3 {
+  margin: 0 0 4px;
+  color: #0f172a;
+}
+
+.visit-result-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.visit-close-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+}
+
+.visit-result-field {
+  margin-bottom: 15px;
+}
+
+.visit-result-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.visit-result-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  color: #0f172a;
+  font: inherit;
+  resize: vertical;
+  outline: none;
+}
+
+.visit-result-field textarea:focus {
+  border-color: #16a34a;
+  box-shadow:
+    0 0 0 3px
+    rgba(22, 163, 74, 0.1);
+}
+
+.visit-followup-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 17px;
+  padding: 13px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+}
+
+.visit-followup-check input {
+  margin-top: 3px;
+}
+
+.visit-followup-check strong,
+.visit-followup-check small {
+  display: block;
+}
+
+.visit-followup-check strong {
+  color: #0f172a;
+}
+
+.visit-followup-check small {
+  margin-top: 3px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.visit-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.visit-complete-btn,
+.visit-cancel-btn {
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.visit-complete-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.visit-complete-btn:hover {
+  background: #15803d;
+}
+
+.visit-cancel-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.visit-findings-display,
+.visit-cancel-display {
+  margin-top: 14px;
+  padding: 15px;
+  border-radius: 11px;
+}
+
+.visit-findings-display {
+  border-left: 4px solid #22c55e;
+  background: #f0fdf4;
+}
+
+.visit-cancel-display {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
+}
+
+.visit-findings-display > span,
+.visit-cancel-display > span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.visit-findings-display > span {
+  color: #15803d;
+}
+
+.visit-cancel-display > span {
+  color: #b91c1c;
+}
+
+.visit-findings-display > p,
+.visit-cancel-display > p {
+  margin: 0 0 7px;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.visit-findings-display small,
+.visit-cancel-display small {
+  color: #64748b;
+}
+
+.visit-followup-display {
+  margin: 12px 0;
+  padding: 11px;
+  border-radius: 8px;
+  background: white;
+}
+
+.visit-followup-display strong {
+  color: #b45309;
+  font-size: 12px;
+}
+
+.visit-followup-display p {
+  margin: 4px 0 0;
+  color: #475569;
+}
+
+.visit-result-message {
+  margin-bottom: 15px;
+  padding: 11px 13px;
+  border-radius: 9px;
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .visit-card-footer,
+  .visit-result-actions {
+    flex-direction: column;
+  }
+
+  .visit-card-footer a,
+  .visit-card-footer button,
+  .visit-result-actions button {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
