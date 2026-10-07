@@ -5,14 +5,99 @@ function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  const getOwner = () => {
+    try {
+      return JSON.parse(
+        localStorage.getItem("messFinderCurrentOwner")
+      );
+    } catch {
+      return null;
+    }
+  };
+
+  const getAdmin = () => {
+    try {
+      return JSON.parse(
+        localStorage.getItem("messFinderCurrentAdmin")
+      );
+    } catch {
+      return null;
+    }
+  };
+
+  const getProctor = () => {
+    try {
+      return JSON.parse(
+        localStorage.getItem("messFinderCurrentProctor")
+      );
+    } catch {
+      return null;
+    }
+  };
+
+  const owner = getOwner();
+  const admin = getAdmin();
+  const proctor = getProctor();
+
+  const activeRole = admin
+    ? "admin"
+    : proctor
+    ? "proctor"
+    : owner
+    ? "owner"
+    : user
+    ? "student"
+    : "guest";
+
   const handleLogout = () => {
-    logout();
+    if (activeRole === "student") {
+      logout();
+    }
+
+    if (activeRole === "owner") {
+      localStorage.removeItem(
+        "messFinderCurrentOwner"
+      );
+    }
+
+    if (activeRole === "admin") {
+      localStorage.removeItem(
+        "messFinderCurrentAdmin"
+      );
+    }
+
+    if (activeRole === "proctor") {
+      localStorage.removeItem(
+        "messFinderCurrentProctor"
+      );
+    }
+
     navigate("/");
+    window.location.reload();
+  };
+
+  const getUserName = () => {
+    if (activeRole === "admin") {
+      return admin?.name || "Administrator";
+    }
+
+    if (activeRole === "proctor") {
+      return proctor?.name || "Proctor";
+    }
+
+    if (activeRole === "owner") {
+      return owner?.name || "Mess Owner";
+    }
+
+    if (activeRole === "student") {
+      return user?.name || "Student";
+    }
+
+    return "";
   };
 
   return (
     <header className="navbar">
-
       <div className="nav-container">
 
         <Link to="/" className="logo">
@@ -30,30 +115,121 @@ function Navbar() {
 
         <nav className="nav-links">
 
-          <NavLink to="/">
-            Home
-          </NavLink>
+          {activeRole === "guest" && (
+            <>
+              <NavLink to="/">
+                Home
+              </NavLink>
 
-          <NavLink to="/find-mess">
-            Find Mess
-          </NavLink>
+              <NavLink to="/find-mess">
+                Find Mess
+              </NavLink>
 
-          <NavLink to="/best-match">
-            Best Match
-          </NavLink>
+              <NavLink to="/best-match">
+                Best Match
+              </NavLink>
 
-          <NavLink to="/compare">
-            Compare
-          </NavLink>
+              <NavLink to="/compare">
+                Compare
+              </NavLink>
+            </>
+          )}
+
+          {activeRole === "student" && (
+            <>
+              <NavLink to="/">
+                Home
+              </NavLink>
+
+              <NavLink to="/find-mess">
+                Find Mess
+              </NavLink>
+
+              <NavLink to="/best-match">
+                Best Match
+              </NavLink>
+
+              <NavLink to="/compare">
+                Compare
+              </NavLink>
+
+              <NavLink to="/student-support">
+                Support
+              </NavLink>
+            </>
+          )}
+
+          {activeRole === "owner" && (
+            <>
+              <NavLink to="/">
+                Home
+              </NavLink>
+
+              <NavLink to="/owner/dashboard">
+                Dashboard
+              </NavLink>
+
+              <NavLink to="/owner/add-mess">
+                Add Mess
+              </NavLink>
+
+              <NavLink to="/owner/manage-mess">
+                Manage Mess
+              </NavLink>
+            </>
+          )}
+
+          {activeRole === "proctor" && (
+            <>
+              <NavLink to="/">
+                Home
+              </NavLink>
+
+              <NavLink to="/proctor">
+                Proctor Dashboard
+              </NavLink>
+
+              <NavLink to="/proctor/reports">
+                Reports
+              </NavLink>
+
+              <NavLink to="/proctor/visits">
+                Mess Visits
+              </NavLink>
+            </>
+          )}
+
+          {activeRole === "admin" && (
+            <>
+              <NavLink to="/">
+                Home
+              </NavLink>
+
+              <NavLink to="/admin">
+                Admin Dashboard
+              </NavLink>
+
+              <NavLink to="/find-mess">
+                Listings
+              </NavLink>
+            </>
+          )}
 
         </nav>
 
         <div className="nav-actions">
 
-          {user ? (
+          {activeRole !== "guest" ? (
             <>
               <span className="nav-user">
-                👤 {user.name}
+
+                {activeRole === "student" && "🎓 "}
+                {activeRole === "owner" && "🏠 "}
+                {activeRole === "proctor" && "🛡️ "}
+                {activeRole === "admin" && "⚙️ "}
+
+                {getUserName()}
+
               </span>
 
               <button
@@ -67,7 +243,7 @@ function Navbar() {
           ) : (
             <>
               <Link
-                to="/login"
+                to="/choose-login"
                 className="login-link"
               >
                 Login
@@ -85,7 +261,6 @@ function Navbar() {
         </div>
 
       </div>
-
     </header>
   );
 }
