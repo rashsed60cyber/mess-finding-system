@@ -1,43 +1,64 @@
-import { NavLink, Link, useNavigate } from "react-router-dom";
+
+import { useState } from "react";
+import {
+  NavLink,
+  Link,
+  useNavigate,
+  useLocation
+} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+
+const roleLinks = {
+  guest: [
+    { to: "/", label: "Home" },
+    { to: "/find-mess", label: "Find Mess" },
+    { to: "/best-match", label: "Best Match" },
+    { to: "/compare", label: "Compare" }
+  ],
+  student: [
+    { to: "/", label: "Home" },
+    { to: "/find-mess", label: "Find Mess" },
+    { to: "/best-match", label: "Best Match" },
+    { to: "/compare", label: "Compare" },
+    { to: "/student-support", label: "Support" }
+  ],
+  owner: [
+    { to: "/", label: "Home" },
+    { to: "/owner/dashboard", label: "Dashboard" },
+    { to: "/owner/add-mess", label: "Add Mess" },
+    { to: "/owner/manage-mess", label: "Manage Mess" }
+  ],
+  proctor: [
+    { to: "/", label: "Home" },
+    { to: "/proctor", label: "Proctor Dashboard" },
+    { to: "/proctor/reports", label: "Reports" },
+    { to: "/proctor/visits", label: "Mess Visits" }
+  ],
+  admin: [
+    { to: "/", label: "Home" },
+    { to: "/admin", label: "Admin Dashboard" },
+    { to: "/find-mess", label: "Listings" }
+  ]
+};
+
+function readSession(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch {
+    return null;
+  }
+}
 
 function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const getOwner = () => {
-    try {
-      return JSON.parse(
-        localStorage.getItem("messFinderCurrentOwner")
-      );
-    } catch {
-      return null;
-    }
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const getAdmin = () => {
-    try {
-      return JSON.parse(
-        localStorage.getItem("messFinderCurrentAdmin")
-      );
-    } catch {
-      return null;
-    }
-  };
-
-  const getProctor = () => {
-    try {
-      return JSON.parse(
-        localStorage.getItem("messFinderCurrentProctor")
-      );
-    } catch {
-      return null;
-    }
-  };
-
-  const owner = getOwner();
-  const admin = getAdmin();
-  const proctor = getProctor();
+  const owner = readSession("messFinderCurrentOwner");
+  const admin = readSession("messFinderCurrentAdmin");
+  const proctor = readSession("messFinderCurrentProctor");
 
   const activeRole = admin
     ? "admin"
@@ -49,32 +70,7 @@ function Navbar() {
     ? "student"
     : "guest";
 
-  const handleLogout = () => {
-    if (activeRole === "student") {
-      logout();
-    }
-
-    if (activeRole === "owner") {
-      localStorage.removeItem(
-        "messFinderCurrentOwner"
-      );
-    }
-
-    if (activeRole === "admin") {
-      localStorage.removeItem(
-        "messFinderCurrentAdmin"
-      );
-    }
-
-    if (activeRole === "proctor") {
-      localStorage.removeItem(
-        "messFinderCurrentProctor"
-      );
-    }
-
-    navigate("/");
-    window.location.reload();
-  };
+  const links = roleLinks[activeRole];
 
   const getUserName = () => {
     if (activeRole === "admin") {
@@ -96,15 +92,52 @@ function Navbar() {
     return "";
   };
 
+  const roleIcon = {
+    student: "🎓",
+    owner: "🏠",
+    proctor: "🛡️",
+    admin: "⚙️"
+  };
+
+  const closeMenu = () => setMenuOpen(false);
+
+  const handleLogout = () => {
+    closeMenu();
+
+    if (activeRole === "student") {
+      logout();
+    }
+
+    localStorage.removeItem("messFinderCurrentOwner");
+    localStorage.removeItem("messFinderCurrentAdmin");
+    localStorage.removeItem("messFinderCurrentProctor");
+
+    navigate("/");
+    window.location.reload();
+  };
+
+  const renderLinks = () =>
+    links.map((link) => (
+      <NavLink
+        key={link.to}
+        to={link.to}
+        end={link.to === "/"}
+        onClick={closeMenu}
+      >
+        {link.label}
+      </NavLink>
+    ));
+
   return (
     <header className="navbar">
       <div className="nav-container">
 
-        <Link to="/" className="logo">
-          <span className="logo-icon">
-            🏠
-          </span>
-
+        <Link
+          to="/"
+          className="logo"
+          onClick={closeMenu}
+        >
+          <span className="logo-icon">🏠</span>
           <span>
             Mess
             <span className="logo-highlight">
@@ -113,123 +146,18 @@ function Navbar() {
           </span>
         </Link>
 
-        <nav className="nav-links">
-
-          {activeRole === "guest" && (
-            <>
-              <NavLink to="/">
-                Home
-              </NavLink>
-
-              <NavLink to="/find-mess">
-                Find Mess
-              </NavLink>
-
-              <NavLink to="/best-match">
-                Best Match
-              </NavLink>
-
-              <NavLink to="/compare">
-                Compare
-              </NavLink>
-            </>
-          )}
-
-          {activeRole === "student" && (
-            <>
-              <NavLink to="/">
-                Home
-              </NavLink>
-
-              <NavLink to="/find-mess">
-                Find Mess
-              </NavLink>
-
-              <NavLink to="/best-match">
-                Best Match
-              </NavLink>
-
-              <NavLink to="/compare">
-                Compare
-              </NavLink>
-
-              <NavLink to="/student-support">
-                Support
-              </NavLink>
-            </>
-          )}
-
-          {activeRole === "owner" && (
-            <>
-              <NavLink to="/">
-                Home
-              </NavLink>
-
-              <NavLink to="/owner/dashboard">
-                Dashboard
-              </NavLink>
-
-              <NavLink to="/owner/add-mess">
-                Add Mess
-              </NavLink>
-
-              <NavLink to="/owner/manage-mess">
-                Manage Mess
-              </NavLink>
-            </>
-          )}
-
-          {activeRole === "proctor" && (
-            <>
-              <NavLink to="/">
-                Home
-              </NavLink>
-
-              <NavLink to="/proctor">
-                Proctor Dashboard
-              </NavLink>
-
-              <NavLink to="/proctor/reports">
-                Reports
-              </NavLink>
-
-              <NavLink to="/proctor/visits">
-                Mess Visits
-              </NavLink>
-            </>
-          )}
-
-          {activeRole === "admin" && (
-            <>
-              <NavLink to="/">
-                Home
-              </NavLink>
-
-              <NavLink to="/admin">
-                Admin Dashboard
-              </NavLink>
-
-              <NavLink to="/find-mess">
-                Listings
-              </NavLink>
-            </>
-          )}
-
+        <nav
+          className="nav-links desktop-nav-links"
+          aria-label="Main navigation"
+        >
+          {renderLinks()}
         </nav>
 
-        <div className="nav-actions">
-
+        <div className="nav-actions desktop-nav-actions">
           {activeRole !== "guest" ? (
             <>
               <span className="nav-user">
-
-                {activeRole === "student" && "🎓 "}
-                {activeRole === "owner" && "🏠 "}
-                {activeRole === "proctor" && "🛡️ "}
-                {activeRole === "admin" && "⚙️ "}
-
-                {getUserName()}
-
+                {roleIcon[activeRole]} {getUserName()}
               </span>
 
               <button
@@ -257,12 +185,77 @@ function Navbar() {
               </Link>
             </>
           )}
-
         </div>
 
+        <button
+          type="button"
+          className="mobile-menu-toggle"
+          aria-label={
+            menuOpen ? "Close menu" : "Open menu"
+          }
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() =>
+            setMenuOpen((previous) => !previous)
+          }
+        >
+          {menuOpen ? "✕" : "☰"}
+        </button>
+      </div>
+
+      <div
+        id="mobile-navigation"
+        className={`mobile-nav-panel ${
+          menuOpen ? "mobile-nav-open" : ""
+        }`}
+        hidden={!menuOpen}
+      >
+        {activeRole !== "guest" && (
+          <div className="mobile-nav-user">
+            {roleIcon[activeRole]} {getUserName()}
+          </div>
+        )}
+
+        <nav
+          className="mobile-nav-links"
+          aria-label="Mobile navigation"
+        >
+          {renderLinks()}
+        </nav>
+
+        <div className="mobile-nav-actions">
+          {activeRole !== "guest" ? (
+            <button
+              type="button"
+              className="logout-btn"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link
+                to="/choose-login"
+                className="login-link"
+                onClick={closeMenu}
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="nav-register-btn"
+                onClick={closeMenu}
+              >
+                Register
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
 }
 
 export default Navbar;
+
