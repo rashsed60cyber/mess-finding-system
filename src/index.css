@@ -5307,3 +5307,120 @@ main {
     display: none !important;
   }
 }
+
+/* ===== COMPARE PAGE MOBILE RESPONSIVE FIX ===== */
+
+@media (max-width: 768px) {
+
+  .compare-page {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .compare-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 12px;
+    box-sizing: border-box;
+  }
+
+  .compare-selector {
+    padding: 20px 16px;
+  }
+
+  .compare-selector-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .compare-selector-heading button {
+    flex-shrink: 0;
+    width: auto;
+    min-width: 65px;
+    white-space: nowrap;
+    padding: 10px 12px;
+  }
+
+  .compare-select-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .compare-select-box {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .compare-select-box select {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .comparison-section {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .comparison-table-wrapper {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  .comparison-table {
+    width: max-content !important;
+    min-width: 680px !important;
+    table-layout: auto !important;
+    border-collapse: collapse;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    min-width: 190px;
+    padding: 14px 12px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .comparison-table th:first-child,
+  .comparison-table td:first-child {
+    min-width: 125px;
+    width: 125px;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #f8fafc;
+    text-align: left;
+  }
+
+  .comparison-table thead th:first-child {
+    z-index: 3;
+  }
+
+  .compare-mess-heading {
+    min-width: 170px;
+  }
+
+  .compare-photo-placeholder {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .comparison-table td {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+
+}
